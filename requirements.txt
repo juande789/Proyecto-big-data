@@ -1,0 +1,10 @@
+fastapi
+elasticsearch<8
+prophet
+scikit-learn
+pandas
+numpy
+matplotlib
+seaborn
+requests
+urllib3
