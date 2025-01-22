@@ -1,0 +1,48 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e4f0f7; /* Color de fondo basado en el logo */
+    color: #3a4b58; /* Color de texto basado en el logo */
+  }
+  
+  .home-container {
+    text-align: center;
+    padding: 50px;
+  }
+  
+  .logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    color: #017c92; /* Azul verdoso del logo */
+  }
+  
+  .options-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+  }
+  
+  .options-list li {
+    margin: 10px 0;
+  }
+  
+  .options-list a {
+    text-decoration: none;
+    color: #017c92;
+    font-weight: bold;
+    border: 2px solid #017c92;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .options-list a:hover {
+    background-color: #017c92;
+    color: white;
+  }
+  

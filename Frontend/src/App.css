@@ -1,0 +1,77 @@
+/* Estilo general */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #e8f0f7; /* Fondo claro basado en el logo */
+  color: #1b3b50; /* Color del texto principal */
+}
+
+/* Contenedor principal */
+.App {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Estilo del encabezado */
+.App-header {
+  background-color: #146b8c; /* Azul oscuro del logo */
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.App-logo {
+  height: 100px; /* Tamaño ajustado del logo */
+  margin-bottom: 20px;
+}
+
+/* Links y botones */
+.App-link {
+  color: #23b8d2; /* Azul claro del logo */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.App-link:hover {
+  color: #0d5e74; /* Oscurece el color al pasar el ratón */
+}
+
+button {
+  background-color: #23b8d2;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 10px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #146b8c;
+}
+
+/* Input fields */
+input {
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  margin: 5px;
+  font-size: 1rem;
+  width: 200px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #146b8c;
+  box-shadow: 0 0 5px rgba(20, 107, 140, 0.5);
+}
+
+/* Footer */
+footer {
+  margin-top: 20px;
+  color: #1b3b50;
+  font-size: 0.9rem;
+}
