@@ -1,0 +1,74 @@
+from elasticsearch import Elasticsearch
+import pandas as pd
+from prophet import Prophet
+
+# Conexión a Elasticsearch
+es = Elasticsearch(
+    hosts=["https://localhost:9200"],
+    basic_auth=("elastic", "=5TCV_SOSfm6QOm5ax9m"),
+    verify_certs=False
+)
+
+# Índice de Elasticsearch
+index_name = "consumo_energetico_viviendas_historico_completo"
+
+# Consulta para obtener los datos
+query = {
+    "query": {
+        "match_all": {}
+    },
+    "size": 10000  # Ajusta si tienes más datos
+}
+
+# Obtener datos desde Elasticsearch
+response = es.search(index=index_name, body=query)
+hits = response["hits"]["hits"]
+
+# Convertir resultados en un DataFrame
+data = pd.DataFrame([hit["_source"] for hit in hits])
+
+# Convertir la columna de fecha a formato datetime
+data['Fecha'] = pd.to_datetime(data['Fecha'])  # Ajustar nombre de la columna si es necesario
+
+# Ordenar por fecha
+data = data.sort_values('Fecha')
+
+# Series temporales: Consumir los datos necesarios
+series = data[['Fecha', 'Consumo energetico (kWh/m²)']].set_index('Fecha')
+
+# Eliminar duplicados en el índice
+series = series[~series.index.duplicated(keep='first')]
+
+# Asegurar frecuencia mensual y reducir tamaño
+series = series.asfreq('MS')  # Ajustar la frecuencia a inicio de mes
+series = series.resample('M').mean()  # Promediar los datos por mes
+
+# Preparar los datos para Prophet
+prophet_data = series.reset_index()
+prophet_data.columns = ['ds', 'y']
+
+# MODELO PROPHET
+# Ajustar el modelo Prophet con parámetros adicionales para mayor precisión
+prophet_model = Prophet(
+    yearly_seasonality=True,
+    weekly_seasonality=False,
+    daily_seasonality=False,
+    seasonality_mode='multiplicative',  # Capturar efectos estacionales más complejos
+    interval_width=0.95  # Ampliar intervalos de confianza para mayor cobertura
+)
+
+# Agregar estacionalidad adicional si se conoce algún patrón específico
+prophet_model.add_seasonality(name='monthly', period=30.5, fourier_order=10)
+
+# Entrenar el modelo
+prophet_model.fit(prophet_data)
+
+# Crear dataframe futuro
+future = prophet_model.make_future_dataframe(periods=12, freq='M')
+
+# Predecir
+prophet_forecast = prophet_model.predict(future)
+
+# Mostrar las predicciones con intervalos de confianza
+print("Prophet Forecast (Próximos 12 pasos):")
+print(prophet_forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(12))
